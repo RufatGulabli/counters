@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 
 class Counter extends Component {
-  state = {
-    value: this.props.counter.value
-    // students: []
-  };
-
   styles = {
     fontSize: 14,
-    fontFamily: "Ubuntu",
+    fontFamily: "Fira Code Regular",
     boxShadow: "0 0 8px black",
     borderRadius: 10
   };
+
+  componentDidUpdate(prevProps, prevStates) {
+    console.log("Props : ", prevProps.counter.value);
+    console.log("State : ", prevStates);
+  }
 
   render() {
     return (
@@ -20,7 +20,10 @@ class Counter extends Component {
           {this.formatCount()}
         </span>
 
-        <button onClick={this.handleIncrement} className="btn btn-success m-1">
+        <button
+          onClick={() => this.props.onIncrement(this.props.counter)}
+          className="btn btn-success m-1"
+        >
           Add
         </button>
         <button
@@ -34,34 +37,17 @@ class Counter extends Component {
     );
   }
 
-  // getTags() {
-  //   if (this.state.students.length === 0)
-  //     return <p className="lead m-2">List is empty</p>;
-  //   return (
-  //     <ul>
-  //       {this.state.students.map(tag => (
-  //         <li key={tag}>{tag}</li>
-  //       ))}
-  //     </ul>
-  //   );
-  // }
-
   getBadgeClasses() {
     let classes = "m-2 badge badge-";
-    classes += this.state.value === 0 ? "warning" : "info";
+    classes += this.props.counter.value === 0 ? "warning" : "info";
     return classes;
   }
 
   formatCount() {
-    const { value } = this.state;
+    const { value } = this.props.counter;
     const zero = <span>Zero</span>;
     return value === 0 ? zero : value;
   }
-
-  handleIncrement = () => {
-    console.log(this.state.value);
-    this.setState({ value: this.state.value + 1 });
-  };
 }
 
 export default Counter;
